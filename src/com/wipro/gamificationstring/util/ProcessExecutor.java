@@ -33,22 +33,5 @@ public class ProcessExecutor {
 	    return map;
 	  }
 	
-	  public static void main(String[] args) {
-		  
-		  HashMap<String, String> map = new HashMap<String, String>();
-		
-		  try {
-			 map = runProcess("java -cp d:\\tomcat\\uploads\\user\\ MainClass hi");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		  
-		  System.out.println("Output = "+ map.get("output"));
-		  System.out.println("Error = "+map.get("error"));
-		  System.out.println("Exit code = "+map.get("exitValue"));
-		  
-		  
-	}
 
 }

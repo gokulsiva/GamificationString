@@ -30,18 +30,15 @@ public class UploadServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private boolean isMultipart;
-   private String filePath;
-   private int maxFileSize = 50 * 1024;
-   private int maxMemSize = 4 * 1024;
+    private String filePath;
+    private int maxFileSize = 50 * 1024;
+    private int maxMemSize = 4 * 1024;
 
    public void init( ){
       // Get the file location where it would be stored.
-      filePath = 
-             getServletContext().getInitParameter("file-upload"); 
+      filePath = getServletContext().getInitParameter("file-upload"); 
    }
-   public void doPost(HttpServletRequest request, 
-               HttpServletResponse response)
-              throws ServletException, java.io.IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, java.io.IOException {
       // Check that we have a file upload request
       isMultipart = ServletFileUpload.isMultipartContent(request);
       response.setContentType("text/html");
@@ -67,13 +64,27 @@ public class UploadServlet extends HttpServlet {
       ServletFileUpload upload = new ServletFileUpload(factory);
       // maximum file size to be uploaded.
       upload.setSizeMax( maxFileSize );
+      
+      
+      String dir = filePath+"user"+System.getProperty("file.separator");
+      String userCodeFilename = dir+"GamificationString.java";
+      String mainCodeFilename = dir+"MainClass.java";
+      String testCase = "hi";
+      String result = "";
+      String output = "";
+      
+      
+      HashMap<String, String> userCompileOutput = new HashMap<String, String>();
+      HashMap<String, String> mainCompileOutput = new HashMap<String, String>();
+      HashMap<String, String> executedOutput = new HashMap<String, String>();
+      
+      
 
       Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
       InputStream filecontent = filePart.getInputStream();
       byte[] buffer = new byte[filecontent.available()];
       filecontent.read(buffer);
-      String dir = filePath+"user"+System.getProperty("file.separator");
-      String userCodeFilename = dir+"GamificationString.java";
+      
       File targetFile = new File(userCodeFilename);
       targetFile.getParentFile().mkdirs();//!correct
       if (!targetFile.exists()){
@@ -82,8 +93,7 @@ public class UploadServlet extends HttpServlet {
 	  OutputStream outStream = new FileOutputStream(targetFile);
       outStream.write(buffer);
       outStream.close();
-      //String expected = request.getParameter("expected");
-      String mainCodeFilename = dir+"MainClass.java";
+      
       try {
     	  File mainFile = new File(mainCodeFilename);
           String mainProgram = ProgramStrings.getMainProgram();
@@ -94,11 +104,8 @@ public class UploadServlet extends HttpServlet {
 	} catch (Exception e) {
 		e.printStackTrace();
 	} 
-      String result = "";
-      String testCase = "hi";
-      HashMap<String, String> userCompileOutput = new HashMap<String, String>();
-      HashMap<String, String> mainCompileOutput = new HashMap<String, String>();
-      HashMap<String, String> executedOutput = new HashMap<String, String>();
+      
+      
       try {
 		userCompileOutput = ProcessExecutor.runProcess("javac -cp "+dir+" -d "+dir+" "+userCodeFilename);
 		mainCompileOutput = ProcessExecutor.runProcess("javac -cp "+dir+" -d "+dir+" "+mainCodeFilename);
@@ -107,7 +114,7 @@ public class UploadServlet extends HttpServlet {
 			if(mainCompileOutput.get("exitValue").equals("0")){
 				executedOutput = ProcessExecutor.runProcess("java -cp "+dir+" MainClass "+testCase);
 				if (executedOutput.get("exitValue").equals("0")) {
-					result = executedOutput.get("output");
+					result = executedOutput.get("output").trim();
 				} else {
 					result = executedOutput.get("error");
 				}
@@ -122,7 +129,7 @@ public class UploadServlet extends HttpServlet {
 		e.printStackTrace();
 	}
       result = result.substring(result.lastIndexOf('\\')+1);
-      String output =result.replaceAll("\n\r", "<br>")
+      output =result.replaceAll("\n\r", "<br>")
               .replaceAll("\n", "<br>")
               .replaceAll(System.lineSeparator(), "<br>");
       out.write(output);
