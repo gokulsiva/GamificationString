@@ -19,13 +19,11 @@ public class DBUtil {
 	
 	public static Session getSession(){
 		Session session = getSessionFactory().openSession();
-		session.beginTransaction();
 		return session;
 	}
 	
 	
 	public static void closeSession(Session session){
-		session.getTransaction().commit();
 		session.close();		
 	}
 	
