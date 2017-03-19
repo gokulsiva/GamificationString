@@ -16,7 +16,7 @@
         </property>
         
         <!-- Database connection Pool Size -->
-        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.connection.pool_size">100</property>
 
         <!-- SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
@@ -27,8 +27,7 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <!-- Map Entity Class -->
-    <mapping class="com.gokul.test.StudentEntity"></mapping>
-    <mapping class="filestoring.ObjectEntity"></mapping>
+    <mapping class="com.wipro.gamificationstring.bean.QuestionBean"></mapping>
 
 </session-factory>
 </hibernate-configuration>

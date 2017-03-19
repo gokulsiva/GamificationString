@@ -2,7 +2,11 @@
     pageEncoding="ISO-8859-1"%>
 
 
-<%@ page import="com.wipro.gamificationstring.util.ProgramStrings" %>
+<%@ page import="com.wipro.gamificationstring.util.ProgramStrings, com.wipro.gamificationstring.service.QuestionAdmin, com.wipro.gamificationstring.bean.QuestionBean" %>
+
+<%
+	QuestionBean question = QuestionAdmin.getQuestion(new Integer(request.getParameter("id")));
+%>
 
 
 <!DOCTYPE html>
@@ -10,6 +14,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Editor</title>
+<script src="jquery.js"></script>
 <script type="text/javascript">
     function Validate() {
     	var frm = document.getElementById('code_form') || null;
@@ -23,14 +28,63 @@
         } else {
            frm.enctype = 'multipart/form-data';
            frm.action = 'UploadServlet'; 
-           frm.submit();
+           $('#hidden_div').show();
+           var form = $("#code_form")[0]; // You need to use standart javascript object here
+           var formData = new FormData(form);
+           formData.append('file', $('input[type=file]')[0].files[0]); 
+           $.ajax({
+       		type:"POST",
+               url:'UploadServlet',
+               data: formData,
+               contentType: false,
+               processData: false,
+               success: function(response){
+                   console.log(response);  
+               	$('#hidden_div').hide();
+               	$("textarea[name='output']").html(response);  
+               }
+           });     
         }
     	} else {
     	frm.enctype = 'application/x-www-form-urlencoded';
         frm.action = 'Compiler';
-        frm.submit();
-    	}
+        $('#hidden_div').show();
+        var form=$("#code_form");
+    	$.ajax({
+    		type:"POST",
+            url:form.attr("action"),
+            data:$("#code_form").serialize(),
+            success: function(response){
+                console.log(response);  
+            	$('#hidden_div').hide();
+            	$("textarea[name='output']").html(response);  
+            }
+        });
+    	}	
     }
+    
+    function finalSubmission() {
+    	$('#hidden_div').show();
+    	var id = document.getElementById('questionId').value;
+    	console.log(id);
+    	$.ajax({
+            url: "TestCaseChecker?id="+id,
+            type: 'GET',
+            success: function(response) {
+            	$('#hidden_div').hide();
+                console.log(response);
+                var str = response.split(" ");
+                $("textarea[name='output']").html(response);
+                var result = str[str.length - 1];
+                console.log(result);
+                if(result.trim() == 'passed.') {
+                    alert('Congrats you solved this problem successfully.');
+                }
+            }
+        });
+    	
+    }
+    
 </script>
 <style type="text/css">
 
@@ -73,6 +127,11 @@ float: right;
     width: 100%;
 }
 
+h3 {
+	padding: 0;
+	margin: 0;
+}
+
 textarea {
   overflow-wrap: normal;
   overflow-x: scroll;
@@ -87,17 +146,20 @@ code {
 </head>
 <body>
 
+<div id="hidden_div" align="center" hidden style="color: green;">Compiling....Please wait....</div>
+
 <div style="width: 100%; height: 100%;">
 
 	<div id="explanation" style="width: 100%;">
 		<h3>Explanation:</h3><br>
-		<textarea spellcheck="false" readonly style="width: 100%;" rows="5"></textarea>
+		<b> <%= question.getQuestionName() %> </b>
+		<textarea spellcheck="false" readonly style="width: 100%;  margin-top: 0px;" rows="5"><%= question.getExplanation() %></textarea>
 	</div>
 	
 	<div class="wrap">
 	    <div class="fleft">
 	    	<h3>Expected output:</h3><br><br>
-	    	<textarea name="expected" spellcheck="false" form="code_form" readonly style="width: 98%;" rows="10">hi</textarea>
+	    	<textarea name="expected" spellcheck="false" form="code_form" readonly style="width: 98%;" rows="10"><%= question.getExpected_1() %></textarea>
 	    </div>
 	    <div class="fcenter">
 		    <h3>Enter your code here:</h3><br>
@@ -115,9 +177,11 @@ code {
 	<br>
 	<div style="clear: both;" align="center">
 	<form method="post" id="code_form">
+	<input type="hidden" name="questionId" id="questionId" value="<%= question.getQuestionId()%>">
 	<input id="useFile" type="checkbox" name="File" value="file"/>Use java file instead. &nbsp;
 	<input id="FileUploader" type="file" name="file" accept=".java" size="100">
-	<input type="button" value="Compile & Execute" onclick="Validate()"/>
+	<input type="button" value="Compile & Test" onclick="Validate()"/>
+	<input type="button" value="Final Submit" style="margin-right: 6em; float: right;" onclick="finalSubmission()">
 	</form>
 	</div>
 

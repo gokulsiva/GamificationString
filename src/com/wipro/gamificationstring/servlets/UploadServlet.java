@@ -18,6 +18,8 @@ import javax.servlet.http.Part;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
+import com.wipro.gamificationstring.bean.QuestionBean;
+import com.wipro.gamificationstring.service.QuestionAdmin;
 import com.wipro.gamificationstring.util.ProcessExecutor;
 import com.wipro.gamificationstring.util.ProgramStrings;
 
@@ -44,14 +46,7 @@ public class UploadServlet extends HttpServlet {
       response.setContentType("text/html");
       java.io.PrintWriter out = response.getWriter( );
       if( !isMultipart ){
-         out.println("<html>");
-         out.println("<head>");
-         out.println("<title>Servlet upload</title>");  
-         out.println("</head>");
-         out.println("<body>");
-         out.println("<p>No file uploaded</p>"); 
-         out.println("</body>");
-         out.println("</html>");
+         out.println("No file uploaded"); 
          return;
       }
       DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -65,13 +60,13 @@ public class UploadServlet extends HttpServlet {
       // maximum file size to be uploaded.
       upload.setSizeMax( maxFileSize );
       
+      QuestionBean question = QuestionAdmin.getQuestion(new Integer(request.getParameter("questionId")));      
       
       String dir = filePath+"user"+System.getProperty("file.separator");
       String userCodeFilename = dir+"GamificationString.java";
       String mainCodeFilename = dir+"MainClass.java";
-      String testCase = "hi";
+      String testCase = question.getTestCase_1();
       String result = "";
-      String output = "";
       
       
       HashMap<String, String> userCompileOutput = new HashMap<String, String>();
@@ -129,10 +124,7 @@ public class UploadServlet extends HttpServlet {
 		e.printStackTrace();
 	}
       result = result.substring(result.lastIndexOf('\\')+1);
-      output =result.replaceAll("\n\r", "<br>")
-              .replaceAll("\n", "<br>")
-              .replaceAll(System.lineSeparator(), "<br>");
-      out.write(output);
+      out.write(result);
       out.flush();
       out.close();
       

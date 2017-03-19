@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.wipro.gamificationstring.bean.QuestionBean;
+import com.wipro.gamificationstring.service.QuestionAdmin;
 import com.wipro.gamificationstring.util.ProcessExecutor;
 import com.wipro.gamificationstring.util.ProgramStrings;
 
@@ -44,13 +46,13 @@ public class Compiler extends HttpServlet {
 		
 		  response.setContentType("text/html");
 	      java.io.PrintWriter out = response.getWriter( );
+	      QuestionBean question = QuestionAdmin.getQuestion(new Integer(request.getParameter("questionId")));
 	
 		  String dir = filePath+"user"+System.getProperty("file.separator");
 	      String userCodeFilename = dir+"GamificationString.java";
 	      String mainCodeFilename = dir+"MainClass.java";
-	      String testCase = "hi";
+	      String testCase = question.getTestCase_1();
 	      String result = "";
-	      String output = "";
 	      
 	      HashMap<String, String> userCompileOutput = new HashMap<String, String>();
 	      HashMap<String, String> mainCompileOutput = new HashMap<String, String>();
@@ -99,10 +101,7 @@ public class Compiler extends HttpServlet {
 	  		e.printStackTrace();
 	  	}
 	        result = result.substring(result.lastIndexOf('\\')+1);
-	        output =result.replaceAll("\n\r", "<br>")
-	                .replaceAll("\n", "<br>")
-	                .replaceAll(System.lineSeparator(), "<br>");
-	        out.write(output);
+	        out.write(result);
 	        out.flush();
 	        out.close();
 	        

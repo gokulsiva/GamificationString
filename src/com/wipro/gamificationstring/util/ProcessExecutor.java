@@ -27,9 +27,9 @@ public class ProcessExecutor {
 	    pro.waitFor();
 	    String exitValue =new Integer(pro.exitValue()).toString();
 	    HashMap<String, String> map = new HashMap<String, String>();
-	    map.put("output", output);
-	    map.put("error", error);
-	    map.put("exitValue", exitValue);
+	    map.put("output", output.trim());
+	    map.put("error", error.trim());
+	    map.put("exitValue", exitValue.trim());
 	    return map;
 	  }
 	
