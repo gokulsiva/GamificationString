@@ -15,6 +15,8 @@
     String expected3 = "";
     String postUrl = "CreateQuestion";
     String buttonValue = "Create Question";
+    String indexUrl = "<< Back to index";
+    String welcomeTitle = "Create new question";
     
     id = request.getParameter("id");
     if(!(id == null)){
@@ -29,6 +31,7 @@
     	expected3 = question.getExpected_3();
     	postUrl = "UpdateQuestion";
     	buttonValue = "Update Question";   	
+    	welcomeTitle = "Edit question";
     } else {
     	id = "";
     }
@@ -47,7 +50,7 @@ textarea {
   overflow-x: scroll;
 }
 </style>
-<script src="jquery.js"></script>
+<script src="js/jquery.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -78,6 +81,10 @@ $form.on('submit', function(ev){
 
 <div id="hidden_div" align="center" hidden style="color: green;">Submitting data please wait.</div>
 
+<div align="left"><font size="30px"><b><%= welcomeTitle %></b></font></div>
+<br><br>
+<a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 5px;"><b><%= indexUrl %></b></a>
+<br><br>
 <form id="questionForm" action="<%= postUrl %>" method="post">
 <input type="hidden" name="id" value="<%= id %>">
 <table>
@@ -116,6 +123,7 @@ $form.on('submit', function(ev){
 </tr>
 </table>
 <input type="submit" value="<%= buttonValue %>" >
+<a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a>
 </form>
 
 </body>

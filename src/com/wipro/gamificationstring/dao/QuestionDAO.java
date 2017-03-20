@@ -107,7 +107,7 @@ public class QuestionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
-			status = "failed";
+			status = "Deletion failed";
 		} finally {
 			DBUtil.closeSession(session);
 		}

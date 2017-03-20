@@ -14,7 +14,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Editor</title>
-<script src="jquery.js"></script>
+<script src="js/jquery.js"></script>
 <script type="text/javascript">
     function Validate() {
     	var frm = document.getElementById('code_form') || null;
@@ -74,7 +74,7 @@
             	$('#hidden_div').hide();
                 console.log(response);
                 var str = response.split(" ");
-                $("textarea[name='output']").html(response);
+                $("textarea[name='output']").text(response);
                 var result = str[str.length - 1];
                 console.log(result);
                 if(result.trim() == 'passed.') {

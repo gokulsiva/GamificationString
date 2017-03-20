@@ -78,7 +78,4 @@ public class QuestionBean {
 		this.expected_3 = expected_3;
 	}
 	
-	
-	
-
 }
