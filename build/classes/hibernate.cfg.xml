@@ -28,6 +28,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <!-- Map Entity Class -->
     <mapping class="com.wipro.gamificationstring.bean.QuestionBean"></mapping>
-
+	<mapping class="com.wipro.gamificationstring.bean.UserBean"></mapping>
 </session-factory>
 </hibernate-configuration>

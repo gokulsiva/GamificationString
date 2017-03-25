@@ -40,6 +40,11 @@ public class TestCaseChecker extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		if(request.getSession().getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+		
 		Integer id = new Integer(request.getParameter("id"));
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();

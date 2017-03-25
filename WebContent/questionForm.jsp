@@ -3,6 +3,13 @@
     <%@ page import="com.wipro.gamificationstring.bean.QuestionBean, com.wipro.gamificationstring.service.QuestionAdmin" %>
     
     <%
+    	if(session.getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+    %>
+    
+    <%
     
     String id = "";
     String name = "";
@@ -78,6 +85,8 @@ $form.on('submit', function(ev){
 </script>
 </head>
 <body>
+
+<jsp:include page="user-details.jsp" />
 
 <div id="hidden_div" align="center" hidden style="color: green;">Submitting data please wait.</div>
 

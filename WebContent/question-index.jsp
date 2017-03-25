@@ -3,6 +3,13 @@
     
 <%@ page import="com.wipro.gamificationstring.service.QuestionAdmin, com.wipro.gamificationstring.bean.QuestionBean, java.util.List" %>
     
+    <%
+    	if(session.getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+    %>
+    
     <% List<QuestionBean> questions = QuestionAdmin.getAllQuestions(); %>
     
     
@@ -13,6 +20,8 @@
 <title>Question's Index</title>
 </head>
 <body>
+
+<jsp:include page="user-details.jsp" />
 
 <h3>List of Questions :</h3>
 

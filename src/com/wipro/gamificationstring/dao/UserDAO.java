@@ -2,40 +2,41 @@ package com.wipro.gamificationstring.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 
-import com.wipro.gamificationstring.bean.QuestionBean;
+import com.wipro.gamificationstring.bean.UserBean;
 import com.wipro.gamificationstring.util.DBUtil;
 
-public class QuestionDAO {
-	
-	public static String create(QuestionBean question) {
+public class UserDAO {
+
+	public static String create(UserBean user) {
 		String status = "";
 		Session session = DBUtil.getSession();
 		session.beginTransaction();
 		try {
 			
-			session.save(question);
+			session.save(user);
 			session.getTransaction().commit();
-			status = "Successfully created question.";
+			status = "Successfully created user.";
 			
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 			if(e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
-				status = "Question name already exists try different name.";
+				status = "User name already exists try different name.";
 		      } else {
-		    	  status = "Problem saving question. Unable to save.";
+		    	  status = "Problem saving user. Unable to save.";
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
-			status = "Problem saving question. Unable to save.";
+			status = "Problem saving user. Unable to save.";
 		} finally {
 			DBUtil.closeSession(session);
 		}
@@ -44,15 +45,15 @@ public class QuestionDAO {
 	}
 	
 	
-	public static String update(QuestionBean question) {
+	public static String update(UserBean user) {
 		String status = "";
 		Session session = DBUtil.getSession();
 		session.beginTransaction();
 		try {
 			
-			session.update(question);
+			session.update(user);
 			session.getTransaction().commit();
-			status = "Successfully updated question.";
+			status = "Successfully updated user.";
 			
 		} catch (OptimisticLockException e) {
 			e.printStackTrace();
@@ -60,12 +61,12 @@ public class QuestionDAO {
 			if(e.getCause() instanceof org.hibernate.StaleStateException) {
 				status = "No such object to update";
 		      } else {
-		    	  status = "Problem saving question. Unable to save.";
+		    	  status = "Problem saving user. Unable to save.";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
-			status = "Problem saving question. Unable to save.";
+			status = "Problem saving user. Unable to save.";
 		} finally {
 			DBUtil.closeSession(session);
 		}
@@ -74,35 +75,54 @@ public class QuestionDAO {
 	}
 	
 	
-	public static QuestionBean read(int id) {
+	public static UserBean read(int id) {
 		Session session = DBUtil.getSession();
 		session.beginTransaction();
-		QuestionBean questionBean = session.get(QuestionBean.class, id);
+		UserBean userBean = session.get(UserBean.class, id);
 		session.getTransaction().commit();
 		DBUtil.closeSession(session);
-		return questionBean;
+		return userBean;
 	}
 	
 	
-	public static List<QuestionBean> readAll(){
+	public static UserBean read(String email){
 		Session session = DBUtil.getSession();
+		UserBean userBean = new UserBean();
 		session.beginTransaction();
-		TypedQuery<QuestionBean> query = session.createQuery("from QuestionBean order by questionId asc", QuestionBean.class);
-		List<QuestionBean> questions = query.getResultList();
+		try {
+			
+			TypedQuery<UserBean> query = session.createQuery("from UserBean where email = :email", UserBean.class);
+			query.setParameter("email", email);
+			userBean = query.getSingleResult();
+			
+		} catch (NoResultException e) {
+			userBean = null;
+		}
 		session.getTransaction().commit();
 		DBUtil.closeSession(session);
-		return questions;
+		return userBean;
 	}
 	
-	public static String delete(QuestionBean question) {
+	
+	public static List<UserBean> readAll(){
+		Session session = DBUtil.getSession();
+		session.beginTransaction();
+		TypedQuery<UserBean> query = session.createQuery("from UserBean order by userId asc", UserBean.class);
+		List<UserBean> users = query.getResultList();
+		session.getTransaction().commit();
+		DBUtil.closeSession(session);
+		return users;
+	}
+	
+	public static String delete(UserBean user) {
 		String status = "";
 		Session session = DBUtil.getSession();
 		session.beginTransaction();
 		try {
 			
-			session.delete(question);
+			session.delete(user);
 			session.getTransaction().commit();
-			status = "Successfully deleted question.";
+			status = "Successfully deleted user.";
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,16 +136,8 @@ public class QuestionDAO {
 	
 	
 	public static void main(String[] args) {
-		QuestionBean bean = new QuestionBean();
-		bean.setQuestionId(35);
-		bean.setQuestionName("Demo question 2");
-		bean.setExplanation("Simple explanation");
-		bean.setTestCase_1("demo1");
-		bean.setExpected_1("demo1");
-		bean.setTestCase_2("demo2");
-		bean.setExpected_2("demo2");
-		bean.setTestCase_3("demo3");
-		bean.setExpected_3("demo3");
-		System.out.println(update(bean));
+		UserBean bean = read("admins");
+		System.out.println(bean);
 	}
+	
 }

@@ -4,6 +4,13 @@
     <%@ page import="com.wipro.gamificationstring.bean.QuestionBean, com.wipro.gamificationstring.service.QuestionAdmin"%>
     
     <%
+    	if(session.getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+    %>
+    
+    <%
     	String id = request.getParameter("id");
     	QuestionBean question = QuestionAdmin.getQuestion(new Integer(id));
     	String status = QuestionAdmin.deleteQuestion(question);

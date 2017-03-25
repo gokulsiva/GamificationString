@@ -41,6 +41,12 @@ public class UploadServlet extends HttpServlet {
       filePath = getServletContext().getInitParameter("file-upload"); 
    }
    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, java.io.IOException {
+	   
+	   if(request.getSession().getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+	   
       // Check that we have a file upload request
       isMultipart = ServletFileUpload.isMultipartContent(request);
       response.setContentType("text/html");
@@ -62,7 +68,8 @@ public class UploadServlet extends HttpServlet {
       
       QuestionBean question = QuestionAdmin.getQuestion(new Integer(request.getParameter("questionId")));      
       
-      String dir = filePath+"user"+System.getProperty("file.separator");
+      String user = (String) request.getSession().getAttribute("GamificationStringUserEmail");
+      String dir = filePath+user+System.getProperty("file.separator");
       String userCodeFilename = dir+"GamificationString.java";
       String mainCodeFilename = dir+"MainClass.java";
       String testCase = question.getTestCase_1();

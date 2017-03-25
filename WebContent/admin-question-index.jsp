@@ -3,7 +3,15 @@
     
     <%@ page import="com.wipro.gamificationstring.service.QuestionAdmin, com.wipro.gamificationstring.bean.QuestionBean, java.util.List" %>
     
-    <% List<QuestionBean> questions = QuestionAdmin.getAllQuestions(); 
+    <%
+    	if(session.getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+    %>
+    
+    <% 
+    	List<QuestionBean> questions = QuestionAdmin.getAllQuestions(); 
     	int sno = 1;
     %>
     
@@ -19,13 +27,7 @@ a{
  color:#cc0000;
 }
 
-table {
-    border-collapse: collapse;
-    margin-left: 10px;
-    padding: 5px;
-}
-
-table, td, th {
+.class {
     border: 1px solid black;
     vertical-align: middle;
     size: 25px;
@@ -74,6 +76,8 @@ function ajaxFunction (e) {
 </head>
 <body>
 
+<jsp:include page="user-details.jsp" />
+
 <div id="container">
 
 <div id="hidden_div" align="center" hidden style="color: green;">Deleting data please wait.</div>
@@ -83,20 +87,22 @@ function ajaxFunction (e) {
 <a href="questionForm.jsp" class="button"> <font>Create new question</font> </a>
 <br><br>
 
-<table>
+<table style="border-collapse: collapse;
+    margin-left: 10px;
+    padding: 5px;" class="class" >
 
-<tr>
-<th align="center">S.No</th>
-<th align="center">Name</th>
-<th align="center">Options</th>
+<tr class="class" >
+<th align="center" class="class" >S.No</th>
+<th align="center" class="class" >Name</th>
+<th align="center" class="class" >Options</th>
 </tr>
 
 <% for(QuestionBean question: questions){ %>
 
-<tr>
+<tr class="class" >
 
-<td><%= sno %></td>
-<td><%= question.getQuestionName() %></td>
+<td class="class" ><%= sno %></td>
+<td class="class" ><%= question.getQuestionName() %></td>
 <td>
 
 <a href="question-details.jsp?id=<%= question.getQuestionId() %>" class="button"> <font>Show</font> </a>

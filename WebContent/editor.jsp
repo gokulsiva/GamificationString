@@ -5,7 +5,23 @@
 <%@ page import="com.wipro.gamificationstring.util.ProgramStrings, com.wipro.gamificationstring.service.QuestionAdmin, com.wipro.gamificationstring.bean.QuestionBean" %>
 
 <%
-	QuestionBean question = QuestionAdmin.getQuestion(new Integer(request.getParameter("id")));
+    	if(session.getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+    %>
+
+<%
+	QuestionBean question = null;
+	String indexUrl = "question-index.jsp"; 
+	String indexUrlString = "<< Back to questions.";
+	if(request.getParameter("id") != null) {
+	question = QuestionAdmin.getQuestion(new Integer(request.getParameter("id")));
+	
+	} else {
+		response.sendRedirect("index.jsp");
+		return;
+	}
 %>
 
 
@@ -90,6 +106,7 @@
 
 .wrap {
     width: 100%;
+    height: 350px;
     overflow:auto;
 }
 
@@ -97,21 +114,21 @@
     float:left; 
     width: 24.5%;
 	background:lightblue;
-    height: 400px;
+    height: 350px;
 }
 
 .fcenter{
     float:left;
     width: 50%;
     background:lightgreen;
-    height:400px;
+    height:350px;
     margin-left:0.25%;
 }
 
 .fright {
 float: right;
     background:pink;
-    height: 400px;
+    height: 350px;
     width: 24.5%;
     
 }
@@ -145,8 +162,10 @@ code {
 </style>
 </head>
 <body>
-
+<jsp:include page="user-details.jsp" />
 <div id="hidden_div" align="center" hidden style="color: green;">Compiling....Please wait....</div>
+
+<a href="<%= indexUrl %>" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrlString %></b></a>
 
 <div style="width: 100%; height: 100%;">
 
@@ -177,6 +196,7 @@ code {
 	<br>
 	<div style="clear: both;" align="center">
 	<form method="post" id="code_form">
+	<a href="<%= indexUrl %>" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrlString %></b></a>&nbsp;&nbsp;&nbsp;
 	<input type="hidden" name="questionId" id="questionId" value="<%= question.getQuestionId()%>">
 	<input id="useFile" type="checkbox" name="File" value="file"/>Use java file instead. &nbsp;
 	<input id="FileUploader" type="file" name="file" accept=".java" size="100">

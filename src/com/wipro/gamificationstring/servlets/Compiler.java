@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.wipro.gamificationstring.bean.QuestionBean;
 import com.wipro.gamificationstring.service.QuestionAdmin;
@@ -43,12 +44,19 @@ public class Compiler extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		
+		if(request.getSession().getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
 		
 		  response.setContentType("text/html");
 	      java.io.PrintWriter out = response.getWriter( );
 	      QuestionBean question = QuestionAdmin.getQuestion(new Integer(request.getParameter("questionId")));
-	
-		  String dir = filePath+"user"+System.getProperty("file.separator");
+	      
+	      String user = (String) request.getSession().getAttribute("GamificationStringUserEmail");
+		  String dir = filePath+user+System.getProperty("file.separator");
 	      String userCodeFilename = dir+"GamificationString.java";
 	      String mainCodeFilename = dir+"MainClass.java";
 	      String testCase = question.getTestCase_1();
@@ -61,6 +69,10 @@ public class Compiler extends HttpServlet {
 		
 	      try {
 	    	  File userFile = new File(userCodeFilename);
+	    	  userFile.getParentFile().mkdirs();//!correct
+	          if (!userFile.exists()){
+	              userFile.createNewFile();
+	          } 
 	    	  String userProgram = request.getParameter("code");
 	    	  FileWriter fileWriter = new FileWriter(userFile);
 	    	  fileWriter.write(userProgram);

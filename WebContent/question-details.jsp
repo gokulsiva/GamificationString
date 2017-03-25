@@ -4,7 +4,15 @@
     <%@ page import="com.wipro.gamificationstring.bean.QuestionBean, com.wipro.gamificationstring.service.QuestionAdmin"%>
     
     <%
+    	if(session.getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+    %>
+    
+    <%
     String id = request.getParameter("id");
+    String indexUrl = "<< Back to index.";
     QuestionBean question = QuestionAdmin.getQuestion(new Integer(id));
     String name = question.getQuestionName();
     String explanation = question.getExplanation();
@@ -29,46 +37,52 @@ textarea {
   resize: none;
 }
 
-table td {
+.class {
 	vertical-align: top;
 }
 </style>
 </head>
 <body>
-<table>
+
+<jsp:include page="user-details.jsp" />
+
+<a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a><br>
+
+<table class="class">
 <tr><th></th></tr>
 <tr>
-<td>Question name :</td>
-<td><%= name %></td>
+<td class="class" >Question name :</td>
+<td class="class" ><%= name %></td>
 </tr>
 <tr>
-<td>Question explanation :</td>
-<td><textarea name="explanation" rows="6" cols="120" readonly="readonly" ><%= explanation %></textarea></td>
+<td class="class" >Question explanation :</td>
+<td class="class" ><textarea name="explanation" rows="6" cols="120" readonly="readonly" ><%= explanation %></textarea></td>
 </tr>
 <tr>
-<td>Test case 1 :</td>
-<td><%= test1 %></td>
+<td class="class" >Test case 1 :</td>
+<td class="class" ><%= test1 %></td>
 </tr>
 <tr>
-<td>Expected output 1 :</td>
-<td><%= expected1 %></td>
+<td class="class" >Expected output 1 :</td>
+<td class="class"><%= expected1 %></td>
 </tr>
 <tr>
-<td>Test case 2 :</td>
-<td><%= test2 %></td>
+<td class="class">Test case 2 :</td>
+<td class="class"><%= test2 %></td>
 </tr>
 <tr>
-<td>Expected output 2 :</td>
-<td><%= expected2 %></td>
+<td class="class">Expected output 2 :</td>
+<td class="class"><%= expected2 %></td>
 </tr>
 <tr>
-<td>Test case 3 :</td>
-<td><%= test3 %></td>
+<td class="class">Test case 3 :</td>
+<td class="class"><%= test3 %></td>
 </tr>
 <tr>
-<td>Expected output 3 :</td>
-<td><%= expected3 %></td>
+<td class="class">Expected output 3 :</td>
+<td class="class"><%= expected3 %></td>
 </tr>
 </table>
+<a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a>
 </body>
 </html>

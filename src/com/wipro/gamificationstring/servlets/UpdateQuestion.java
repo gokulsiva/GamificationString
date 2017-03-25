@@ -31,6 +31,12 @@ public class UpdateQuestion extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(request.getSession().getAttribute("GamificationStringUserEmail") == null){
+			response.sendRedirect("index.jsp?message=Please LogIn.");
+			return;
+		}
+		
 		QuestionBean question = new QuestionBean();
 		question.setQuestionId(new Integer(request.getParameter("id")));
 		question.setQuestionName(request.getParameter("name").trim());
