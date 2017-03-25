@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.wipro.gamificationstring.bean.QuestionBean;
+import com.wipro.gamificationstring.bean.UserBean;
 import com.wipro.gamificationstring.service.QuestionAdmin;
+import com.wipro.gamificationstring.service.UserAdmin;
 import com.wipro.gamificationstring.util.ProcessExecutor;
 
 /**
@@ -78,6 +80,9 @@ public class TestCaseChecker extends HttpServlet {
 					if (test3.get("output").equals(question.getExpected_3())) {
 						writer.write("TestCase 3 passed.\n");
 						writer.write("All testcases passed.\n");
+						UserBean user = UserAdmin.getUser((String) request.getSession().getAttribute("GamificationStringUserEmail"));
+						user.getSolvedQuestions().add(question.getQuestionId());
+						UserAdmin.updateUser(user);
 					} else {
 						writer.write("TestCase 3 failed.\n");
 					}

@@ -1,5 +1,7 @@
 package com.wipro.gamificationstring.bean;
 
+import java.util.HashSet;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ public class UserBean {
 	private String password;
 	@Column(nullable = false)
 	private String accountType;
+	private HashSet<Integer> solvedQuestions = new HashSet<Integer>();
 	
 	
 	public String getAccountType() {
@@ -31,6 +34,12 @@ public class UserBean {
 	}
 	public int getUserId() {
 		return userId;
+	}
+	public HashSet<Integer> getSolvedQuestions() {
+		return solvedQuestions;
+	}
+	public void setSolvedQuestions(HashSet<Integer> solvedQuestions) {
+		this.solvedQuestions = solvedQuestions;
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
