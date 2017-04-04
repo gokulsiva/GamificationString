@@ -1,7 +1,9 @@
 package com.wipro.gamificationstring.servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -56,11 +58,31 @@ public class TestCaseChecker extends HttpServlet {
 		}
 		QuestionBean question = QuestionAdmin.getQuestion(id);
 		
-		String dir = filePath+"user"+System.getProperty("file.separator");
-		
+		  String user = (String) request.getSession().getAttribute("GamificationStringUserEmail");
+		  String dir = filePath+user+System.getProperty("file.separator");
+	      String userCodeFilename = dir+"GamificationString.java";
+	      String mainCodeFilename = dir+"MainClass.java";
+	      
+	    HashMap<String, String> userCompileOutput = new HashMap<String, String>();
+	    HashMap<String, String> mainCompileOutput = new HashMap<String, String>();
 		HashMap<String, String> test1 = new HashMap<String, String>();
 	    HashMap<String, String> test2 = new HashMap<String, String>();
 	    HashMap<String, String> test3 = new HashMap<String, String>();
+	    
+	    try {
+	    	Arrays.stream(new File(dir).listFiles((f, p) -> p.endsWith(".class"))).forEach(File::delete);
+	    	userCompileOutput = ProcessExecutor.runProcess("javac -cp "+dir+" -d "+dir+" "+userCodeFilename);
+	  		mainCompileOutput = ProcessExecutor.runProcess("javac -cp "+dir+" -d "+dir+" "+mainCodeFilename);
+		} catch (Exception e) {
+			e.printStackTrace();
+			writer.write("Unable to compile and run your code.\nPlease click compile and test before submit.");
+	    	return;
+		}
+	    
+	    if(!( userCompileOutput.get("error").equals("") || mainCompileOutput.get("error").equals("")) ) {
+	    	writer.write("Unable to compile and run your code.\nPlease click compile and test before submit.");
+	    	return;
+	    }
 		
 		try {
 			test1 = ProcessExecutor.runProcess("java -cp "+dir+" MainClass "+question.getTestCase_1());
@@ -71,6 +93,9 @@ public class TestCaseChecker extends HttpServlet {
 		}
 		
 		writer.write("Background testcase checking started....\n");
+		System.out.println(test1.get("error"));
+		System.out.println(test2.get("error"));
+		System.out.println(test3.get("error"));
 		if(test1.get("error").equals("") && test2.get("error").equals("") && test2.get("error").equals("")) {
 			
 			if (test1.get("output").equals(question.getExpected_1())) {
@@ -80,9 +105,9 @@ public class TestCaseChecker extends HttpServlet {
 					if (test3.get("output").equals(question.getExpected_3())) {
 						writer.write("TestCase 3 passed.\n");
 						writer.write("All testcases passed.\n");
-						UserBean user = UserAdmin.getUser((String) request.getSession().getAttribute("GamificationStringUserEmail"));
-						user.getSolvedQuestions().add(question.getQuestionId());
-						UserAdmin.updateUser(user);
+						UserBean userBean = UserAdmin.getUser((String) request.getSession().getAttribute("GamificationStringUserEmail"));
+						userBean.getSolvedQuestions().add(question.getQuestionId());
+						UserAdmin.updateUser(userBean);
 					} else {
 						writer.write("TestCase 3 failed.\n");
 					}

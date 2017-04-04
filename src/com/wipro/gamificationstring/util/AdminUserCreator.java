@@ -1,4 +1,4 @@
-package com.wipro.beantesters;
+package com.wipro.gamificationstring.util;
 
 import com.wipro.gamificationstring.bean.UserBean;
 import com.wipro.gamificationstring.dao.UserDAO;
