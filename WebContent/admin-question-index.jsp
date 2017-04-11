@@ -8,6 +8,9 @@
 			response.sendRedirect("index.jsp?message=Please LogIn.");
 			return;
 		}
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+    response.setDateHeader("Expires", 0); // Proxies.
     %>
     
     <% 
@@ -22,6 +25,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin-Questions</title>
 <style type="text/css">
+
+body {
+	background: #DFDCE3;
+}
+
 a{
  text-decoration:none;
  color:#cc0000;
@@ -37,13 +45,34 @@ a{
 }
 
 a.button{
- background-color:#d8d4d4;
+ font-family: cursive;
+ background: #FFE658;
  border:1px solid #777575;
  border-radius:5px;
  color:black;
  margin-left:5px;
  margin-right:5px;
  padding:5px 5px 5px 5px;
+}
+
+a.button:hover {
+	background: #CBE32D;
+}
+
+.table {
+	font-family: sans-serif;
+}
+
+.tr{
+	background: #ECECEA;
+}
+
+.table tr:hover{
+	background: #FDF3E7;
+}
+
+.th{
+	background: #74AFAD;
 }
 
 </style>
@@ -53,10 +82,10 @@ a.button{
 <script type="text/javascript">
 
 function ajaxFunction (e) {
-	$('#hidden_div').show();
     var link = e.getAttribute('value');
     var r = confirm("Are you sure to delete?");
     if (r == true) {
+    	$('#hidden_div').show();
     	console.log(r);
     	$.ajax({
             url: link,
@@ -75,8 +104,9 @@ function ajaxFunction (e) {
 
 </head>
 <body>
-
+<div>
 <jsp:include page="user-details.jsp" />
+</div>
 
 <div id="container">
 
@@ -84,30 +114,30 @@ function ajaxFunction (e) {
 
 <div align="center"><font size="30px"><b>List of Questions</b></font></div>
 
-<a href="questionForm.jsp" class="button"> <font>Create new question</font> </a>
+ &nbsp;<a href="questionForm.jsp" class="button"> <font style="font-weight: bold;">Create new question</font> </a>
 <br><br>
 
-<table style="border-collapse: collapse;
+<table width="94%" style="border-collapse: collapse; 
     margin-left: 10px;
-    padding: 5px;" class="class" >
+    padding: 5px;" class="class table">
 
-<tr class="class" >
-<th align="center" class="class" >S.No</th>
-<th align="center" class="class" >Name</th>
-<th align="center" class="class" >Options</th>
+<tr class="class tr" >
+<th align="center" class="class th" >S.No</th>
+<th align="center" class="class th" >Name</th>
+<th align="center" class="class th" >Options</th>
 </tr>
 
 <% for(QuestionBean question: questions){ %>
 
-<tr class="class" >
+<tr class="class tr" >
 
-<td class="class" ><%= sno %></td>
-<td class="class" ><%= question.getQuestionName() %></td>
-<td>
+<td align="center" class="class td" ><%= sno %></td>
+<td align="center" class="class td" ><%= question.getQuestionName() %></td>
+<td width="50%" align="center" class="td">
 
-<a href="question-details.jsp?id=<%= question.getQuestionId() %>" class="button"> <font>Show</font> </a>
-<a href="questionForm.jsp?id=<%= question.getQuestionId() %>" class="button"> <font>Edit</font> </a>
-<a href="" value="admin-delete-question.jsp?id=<%= question.getQuestionId() %>" class="button" onclick="ajaxFunction(this);"> <font>Delete</font> </a>
+<a align="center" href="question-details.jsp?id=<%= question.getQuestionId() %>" class="button"> <font>Show question details</font> </a>
+<a align="center" href="questionForm.jsp?id=<%= question.getQuestionId() %>" class="button"> <font>Edit question</font> </a>
+<a align="center" href="" value="admin-delete-question.jsp?id=<%= question.getQuestionId() %>" class="button" onclick="ajaxFunction(this);"> <font>Delete question</font> </a>
 
 </td>
 </tr>

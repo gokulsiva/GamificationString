@@ -55,6 +55,44 @@
 textarea {
   overflow-wrap: normal;
   overflow-x: scroll;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
+}
+body {
+	background: #DFDCE3;
+}
+.font-class {
+	font-family: cursive;
+}
+input[type=text]{
+ width: 250px;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
+}
+input[type=submit]{
+ font-family: cursive;
+ font-weight: bold;
+ background: #FFE658;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
+}
+input[type=submit]:hover {
+	background: #CBE32D;
+}
+a:hover {
+	color: red;
 }
 </style>
 <script src="js/jquery.js"></script>
@@ -99,40 +137,50 @@ $form.on('submit', function(ev){
 <table>
 <tr><th></th></tr>
 <tr>
-<td>Enter question name :</td>
+<td class="font-class">Enter question name </td>
+<td>:</td>
 <td><input type="text" name="name" value="<%= name %>" required ></td>
 </tr>
 <tr>
-<td>Enter question explanation :</td>
+<td class="font-class">Enter question explanation </td>
+<td>:</td>
 <td><textarea name="explanation" rows="6" cols="120" required ><%= explanation %></textarea></td>
 </tr>
 <tr>
-<td>Enter test case 1 :</td>
+<td class="font-class">Enter primary test case </td>
+<td>:</td>
 <td><input type="text" name="testcase1" value="<%= test1 %>" required ></td>
 </tr>
 <tr>
-<td>Enter expected output 1 :</td>
+<td class="font-class">Enter primary expected output </td>
+<td>:</td>
 <td><input type="text" name="expected1" value="<%= expected1 %>" required ></td>
 </tr>
 <tr>
-<td>Enter test case 2 :</td>
+<td class="font-class">Enter test case 2 </td>
+<td>:</td>
 <td><input type="text" name="testcase2" value="<%= test2 %>" required ></td>
 </tr>
 <tr>
-<td>Enter expected output 2 :</td>
+<td class="font-class">Enter expected output 2 </td>
+<td>:</td>
 <td><input type="text" name="expected2" value="<%= expected2 %>" required ></td>
 </tr>
 <tr>
-<td>Enter test case 3 :</td>
+<td class="font-class">Enter test case 3 </td>
+<td>:</td>
 <td><input type="text" name="testcase3" value="<%= test3 %>" required ></td>
 </tr>
 <tr>
-<td>Enter expected output 3 :</td>
+<td class="font-class">Enter expected output 3 </td>
+<td>:</td>
 <td><input type="text" name="expected3" value="<%= expected3 %>" required ></td>
 </tr>
+<tr>
+<td  style="padding-top: 20px;"><input type="submit" value="<%= buttonValue %>" ></td>
+<td  style="padding-top: 20px;"><a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a></td>
+</tr>
 </table>
-<input type="submit" value="<%= buttonValue %>" >
-<a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a>
 </form>
 
 </body>

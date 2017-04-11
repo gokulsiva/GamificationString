@@ -44,6 +44,53 @@
 textarea {
   overflow-wrap: normal;
   overflow-x: scroll;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
+}
+body {
+	background: #DFDCE3;
+}
+.font-class {
+	font-family: cursive;
+}
+input[type=text]{
+ width: 250px;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
+}
+input[type=password]{
+ width: 250px;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
+}
+input[type=submit]{
+ font-family: cursive;
+ font-weight: bold;
+ background: #FFE658;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
+}
+input[type=submit]:hover {
+	background: #CBE32D;
+}
+a:hover {
+	color: red;
 }
 </style>
 <script src="js/jquery.js"></script>
@@ -95,24 +142,32 @@ $form.on('submit', function(ev){
 <table>
 <tr><th></th></tr>
 <tr>
-<td>Enter name :</td>
+<td class="font-class">Enter name </td>
+<td>:</td>
 <td><input required type="text" name="name" value="<%= name %>" required ></td>
 </tr>
 <tr>
-<td>Enter email :</td>
+<td class="font-class">Enter email </td>
+<td>:</td>
 <td><input required type="text" name="email" value="<%= email %>" required ></td>
 </tr>
 <tr>
-<td>Enter password :</td>
+<td class="font-class">Enter password </td>
+<td>:</td>
 <td><input required type="password" id="password" name="password" value="" required ></td>
 </tr>
 <tr>
-<td>Reenter password :</td>
+<td class="font-class">Re-enter password </td>
+<td>:</td>
 <td><input required type="password" id="repassword" name="repassword" value="" required ></td>
 </tr>
+<tr>
+<td  style="padding-top: 20px;"><input type="submit" value="<%= buttonValue %>" onclick="return Validate()" ></td>
+<td  style="padding-top: 20px;"><a href="<%= indexUrl %>" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrlString %></b></a></td>
+</tr>
 </table>
-<input type="submit" value="<%= buttonValue %>" onclick="return Validate()" >
-<a href="<%= indexUrl %>" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrlString %></b></a>
+
+
 </form>
 
 </body>

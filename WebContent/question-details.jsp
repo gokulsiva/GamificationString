@@ -32,57 +32,90 @@
 <title><%= name %></title>
 <style type="text/css">
 textarea {
-  overflow-wrap: normal;
-  overflow-x: scroll;
-  resize: none;
+ overflow-wrap: normal;
+ overflow-x: scroll;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
+ resize: none;
+}
+body {
+	background: #DFDCE3;
+}
+.font-class {
+	font-family: cursive;
+}
+input[type=text]{
+ width: 250px;
+ border:1px solid #777575;
+ border-radius:5px;
+ color:black;
+ margin-left:5px;
+ margin-right:10px;
+ padding:5px 5px 5px 5px;
 }
 
-.class {
-	vertical-align: top;
+a:hover {
+	color: red;
 }
+
 </style>
 </head>
 <body>
 
 <jsp:include page="user-details.jsp" />
 
-<a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a><br>
+<a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a><br><br>
 
-<table class="class">
+<table>
 <tr><th></th></tr>
 <tr>
-<td class="class" >Question name :</td>
-<td class="class" ><%= name %></td>
+<td class="font-class">Enter question name </td>
+<td>:</td>
+<td><input type="text" name="name" value="<%= name %>" readonly></td>
 </tr>
 <tr>
-<td class="class" >Question explanation :</td>
-<td class="class" ><textarea name="explanation" rows="6" cols="120" readonly="readonly" ><%= explanation %></textarea></td>
+<td class="font-class">Enter question explanation </td>
+<td>:</td>
+<td><textarea name="explanation" rows="6" cols="120" readonly ><%= explanation %></textarea></td>
 </tr>
 <tr>
-<td class="class" >Test case 1 :</td>
-<td class="class" ><%= test1 %></td>
+<td class="font-class">Enter primary test case </td>
+<td>:</td>
+<td><input type="text" name="testcase1" value="<%= test1 %>" readonly ></td>
 </tr>
 <tr>
-<td class="class" >Expected output 1 :</td>
-<td class="class"><%= expected1 %></td>
+<td class="font-class">Enter primary expected output </td>
+<td>:</td>
+<td><input type="text" name="expected1" value="<%= expected1 %>" readonly ></td>
 </tr>
 <tr>
-<td class="class">Test case 2 :</td>
-<td class="class"><%= test2 %></td>
+<td class="font-class">Enter test case 2 </td>
+<td>:</td>
+<td><input type="text" name="testcase2" value="<%= test2 %>" readonly ></td>
 </tr>
 <tr>
-<td class="class">Expected output 2 :</td>
-<td class="class"><%= expected2 %></td>
+<td class="font-class">Enter expected output 2 </td>
+<td>:</td>
+<td><input type="text" name="expected2" value="<%= expected2 %>" readonly ></td>
 </tr>
 <tr>
-<td class="class">Test case 3 :</td>
-<td class="class"><%= test3 %></td>
+<td class="font-class">Enter test case 3 </td>
+<td>:</td>
+<td><input type="text" name="testcase3" value="<%= test3 %>" readonly ></td>
 </tr>
 <tr>
-<td class="class">Expected output 3 :</td>
-<td class="class"><%= expected3 %></td>
+<td class="font-class">Enter expected output 3 </td>
+<td>:</td>
+<td><input type="text" name="expected3" value="<%= expected3 %>" readonly ></td>
+</tr>
+<tr>
+<td  style="padding-top: 20px;"><a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a></td>
+<td></td>
 </tr>
 </table>
-<a href="admin-question-index.jsp" style="text-decoration: none; margin-left: 10px;"><b><%= indexUrl %></b></a>
 </body>
 </html>

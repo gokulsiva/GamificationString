@@ -12,6 +12,9 @@
 			response.sendRedirect("index.jsp?message=Please LogIn.");
 			return;
 		}
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+    response.setDateHeader("Expires", 0); // Proxies.
     %>
     
     <% List<QuestionBean> questions = QuestionAdmin.getAllQuestions(); 
@@ -29,6 +32,10 @@
 <title>Question's Index</title>
 <style type="text/css">
 
+body {
+	background: #CFDEF3;
+}
+
 .class {
     border: 1px solid black;
     border-collapse: collapse;
@@ -36,12 +43,26 @@
     size: 25px;
 	font-weight: bold;
 	height: 40px;
-	margin-left: 15%;
 	padding: 5px;
+	text-align: center;
 }
+
+.table {
+	font-family: sans-serif;
+}
+
+.tr{
+	background: #ECECEA;
+}
+
+.th{
+	background: #74AFAD;
+}
+
 
 tr:hover td {
     background: #dddddd;
+    font-family: cursive;
 }
 
 </style>
@@ -50,20 +71,20 @@ tr:hover td {
 
 <jsp:include page="user-details.jsp" />
 
-<h3>List of Questions :</h3>
-<table class="class">
+<h3 align="center">List of Questions</h3>
+<table width="96%" align="center" class="class table">
 <tr class="class">
-<th class="class">S.No</th>
-<th class="class">Name</th>
-<th class="class">Status</th>
+<th class="class th">S.No</th>
+<th class="class th">Name</th>
+<th class="class th">Status</th>
 </tr>
 
 
 <% for(QuestionBean question : questions){ %>
-<tr class="class" style="cursor:pointer" onclick="document.location.href='editor.jsp?id=<%= question.getQuestionId() %>'">
-	<td class="class"><%= sno %></td>
-	<td class="class"><%= question.getQuestionName() %></td>
-	<td class="class"><%= (userSolved.contains(question.getQuestionId()))?"Solved":"Try It" %></td>
+<tr class="class tr" style="cursor:pointer" onclick="document.location.href='editor.jsp?id=<%= question.getQuestionId() %>'">
+	<td class="class td"><%= sno %></td>
+	<td class="class td"><%= question.getQuestionName() %></td>
+	<td class="class td"><%= (userSolved.contains(question.getQuestionId()))?"Solved":"Try It" %></td>
 </tr>	
 	<% sno++;} %>
 

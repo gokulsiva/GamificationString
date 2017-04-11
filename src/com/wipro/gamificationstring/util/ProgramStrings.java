@@ -5,8 +5,15 @@ public class ProgramStrings {
 	private static String mainProgram = "public class MainClass {\r\n" + 
 			"\r\n" + 
 			"	public static void main(String[] args) {\r\n" + 
+			"\r\n" + 
+			"		String input = \"\";\r\n" + 
+			"		for(String s : args){\r\n" + 
+			"			input = input+\" \"+s;\r\n" + 
+			"		}\r\n" + 
+			"\r\n" + 
+			"		input = input.trim();\r\n" + 
 			"		\r\n" + 
-			"		String string = GamificationString.resultString(args[0]);\r\n" + 
+			"		String string = GamificationString.resultString(input);\r\n" + 
 			"		System.out.println(string);\r\n" + 
 			"	}\r\n" + 
 			"	\r\n" + 
