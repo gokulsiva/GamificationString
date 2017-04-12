@@ -20,9 +20,6 @@ a.button{
  margin-right:10px;
  padding:5px 5px 5px 5px;
 }
-a.button:hover {
-	background: #CBE32D;
-}
 
 hr {
 	display: block;

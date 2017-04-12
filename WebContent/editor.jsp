@@ -31,7 +31,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Editor</title>
 <script src="js/jquery.js"></script>
-<script src="js/animate.js"></script>
+<script src="js/typed.js"></script>
 <script type="text/javascript">
     function Validate() {
     	var frm = document.getElementById('code_form') || null;
@@ -73,7 +73,8 @@
             data:$("#code_form").serialize(),
             success: function(response){
                 console.log(response);  
-            	$("textarea[name='output']").html(response);  
+            	//$("textarea[name='output']").html(response);  
+            	typeContent(response);
             	var output = document.getElementById('output');
             	//animateText(output);
             	$('#hidden_div').hide();
@@ -105,43 +106,30 @@
     	
     }
     
-    function animateText(textArea) {
-        let text = textArea.value;
-        let to = text.length,
-          from = 0;
-
-        var primary = animate({
-          duration: 5000,
-          timing: bounce,
-          draw: function(progress) {
-            let result = (to - from) * progress + from;
-            textArea.value = text.substr(0, Math.ceil(result))
-          }
-        });
-    
-    
-        var hideDiv = function() {
-        	$('#hidden_div').hide();
-        }
-        
-        primary().then(hideDiv());
-        
-      }
-
-
-      function bounce(timeFraction) {
-        for (let a = 0, b = 1, result; 1; a += b, b /= 2) {
-          if (timeFraction >= (7 - 4 * a) / 11) {
-            return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
-          }
-        }
-      }
+    function typeContent(string) {
+    	$(".element").typed({
+            strings: [ string ],
+            typeSpeed: 0,
+        	// time before typing starts
+        	startDelay: 0,
+        	// backspacing speed
+        	backSpeed: 0,
+        	// shuffle the strings
+        	shuffle: false,
+        	// time before backspacing
+        	backDelay: 500,
+        	// Fade out instead of backspace (must use CSS class)
+        	fadeOut: false,
+        	fadeOutClass: 'typed-fade-out',
+        	fadeOutSpeed: 500, // milliseconds
+          });
+    }
     
 </script>
 <style type="text/css">
 
 body {
-	background: #CFDEF3;
+	background: lightgrey;
 }
 
 .wrap {
@@ -153,6 +141,7 @@ body {
 .fleft {
     float:left; 
     width: 24.5%;
+    background: lightgrey;
     height: 330px;
 }
 
@@ -166,6 +155,7 @@ body {
 .fright {
 	float: right;
     height: 330px;
+    background: lightgrey;
     width: 24.5%;
     
 }
@@ -203,12 +193,12 @@ textarea:focus {
 }
 
 input[type=button] {
- font-family: cursive;
+ font-family: arial;
  font-weight: bold;
- background: #FFE658;
- border:1px solid #777575;
+ background: #913236;
+ border:1px;
  border-radius:5px;
- color:black;
+ color:white;
  margin-left:5px;
  margin-right:5px;
  padding:5px 5px 5px 5px;
@@ -226,26 +216,52 @@ input[type="file"] {
     display: none;
 }
 .custom-file-upload {
-    font-family: cursive;
+    font-family: arial;
  font-weight: bold;
- background: #FFE658;
- border:1px solid #777575;
+ background: #913236;
+ border:1px;
  border-radius:5px;
- color:black;
+ color:white;
  margin-left:5px;
  margin-right:5px;
  padding:5px 5px 5px 5px;
 }
+
+.typed-cursor{
+    opacity: 1;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+
 </style>
 </head>
 <body>
+<div style="background: lightgrey;">
 <jsp:include page="user-details.jsp" />
+</div>
+
 <div id="hidden_div" align="center" hidden style="color: green;">Compiling....Please wait....</div>
 
 
 <div style="width: 100%; height: 100%;">
 
-	<div id="explanation" style="width: 100%; padding-bottom: 10px;">
+	<div id="explanation" style="width: 100%; padding-bottom: 10px; background: lightgrey;">
 	<div style="padding-bottom: 5px;">
 	<font class="font-class">
 		<h3>Explanation:</h3>
@@ -253,7 +269,7 @@ input[type="file"] {
 	</div>
 	<b> <%= question.getQuestionName() %> </b>
 	<div style="padding-top: 5px;">
-		<textarea spellcheck="false" readonly style="font-family:cursive; border:solid 2px orange; width: 98%;  margin-top: 0px; background:transparent;" rows="4"><%= question.getExplanation() %></textarea>
+		<textarea spellcheck="false" readonly style="font-family:cursive; border:solid 2px orange; width: 98%;  margin-top: 0px;" rows="4"><%= question.getExplanation() %></textarea>
 	</div>	
 	</div>
 	
@@ -262,7 +278,7 @@ input[type="file"] {
 	    <font class="font-class">
 	    	<h3>Expected output:</h3><br><br>
 	    	</font>
-	    	<textarea name="expected" spellcheck="false" form="code_form" readonly style="font-family:cursive; border:solid 2px orange;background:transparent; width: 94%;" rows="8"><%= question.getExpected_1() %></textarea>
+	    	<textarea name="expected" spellcheck="false" form="code_form" readonly style=" font-family:cursive; border:solid 2px orange; width: 97%;" rows="8"><%= question.getExpected_1() %></textarea>
 	    </div>
 	    <div class="fcenter">
 	    <font class="font-class">
@@ -270,7 +286,7 @@ input[type="file"] {
 		    </font>
 		    <div class="container">
 		    <code>
-		    <textarea name="code" spellcheck="false" form="code_form" style="font-family:cursive; border:solid 2px orange; background:#eef2f3 ;font-family: monospace; white-space: pre-wrap;" class="fill"><%= ProgramStrings.getTemplate() %></textarea>
+		    <textarea name="code" spellcheck="false" form="code_form" style=" font-family:cursive; border:solid 2px orange; font-family: monospace; white-space: nowrap;" class="fill"><%= ProgramStrings.getTemplate() %></textarea>
 		    </code>
 			</div>
 	    </div>
@@ -278,7 +294,7 @@ input[type="file"] {
 	    <font class="font-class">
 	    	<h3>Program output:</h3><br><br>
 	    	</font>
-	    	<textarea name="output" id="output" spellcheck="false" readonly style="font-family:cursive; border:solid 2px orange; background:transparent; width: 94%;" rows="8"></textarea>
+	    	<textarea class="element" name="output" id="output" spellcheck="false" readonly style="font-family:cursive; border:solid 2px orange; width: 97%; white-space: nowrap;" rows="8"></textarea>
 	    </div>
 	</div>
 	<br>

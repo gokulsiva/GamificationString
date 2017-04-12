@@ -33,7 +33,7 @@
 <style type="text/css">
 
 body {
-	background: #CFDEF3;
+	background: lightgrey;
 }
 
 .class {
@@ -65,6 +65,11 @@ tr:hover td {
     font-family: cursive;
 }
 
+a.button:hover {
+	background: #577084;
+	color: white;
+}
+
 </style>
 </head>
 <body>
@@ -84,7 +89,7 @@ tr:hover td {
 <tr class="class tr" style="cursor:pointer" onclick="document.location.href='editor.jsp?id=<%= question.getQuestionId() %>'">
 	<td class="class td"><%= sno %></td>
 	<td class="class td"><%= question.getQuestionName() %></td>
-	<td class="class td"><%= (userSolved.contains(question.getQuestionId()))?"Solved":"Try It" %></td>
+	<td class="class td"><%= (userSolved.contains(question.getQuestionId()))?"Solved":"<font style=\"color: red;\">Try It</font>" %></td>
 </tr>	
 	<% sno++;} %>
 

@@ -56,7 +56,8 @@ a.button{
 }
 
 a.button:hover {
-	background: #CBE32D;
+	background: #577084;
+	color: white;
 }
 
 .table {
