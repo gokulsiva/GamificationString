@@ -1,6 +1,8 @@
 package com.wipro.gamificationstring.servlets;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,7 +12,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.wipro.gamificationstring.bean.QuestionBean;
 import com.wipro.gamificationstring.service.QuestionAdmin;
@@ -19,12 +20,18 @@ import com.wipro.gamificationstring.util.ProgramStrings;
 
 
 /**
+ * @author Gokul
+ *
+ */
+
+/**
  * Servlet implementation class Compiler
  */
 @WebServlet("/Compiler")
 public class Compiler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String filePath;
+	private String mainProgramUrl;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -37,6 +44,7 @@ public class Compiler extends HttpServlet {
     public void init( ){
         // Get the file location where it would be stored.
         filePath = getServletContext().getInitParameter("file-upload"); 
+        mainProgramUrl = getServletContext().getInitParameter("mainFile");
      }
     
 
@@ -61,6 +69,8 @@ public class Compiler extends HttpServlet {
 	      String mainCodeFilename = dir+"MainClass.java";
 	      String testCase = question.getTestCase_1();
 	      String result = "";
+	      String userProgram = "";
+	      String mainProgram = "";
 	      
 	      HashMap<String, String> userCompileOutput = new HashMap<String, String>();
 	      HashMap<String, String> mainCompileOutput = new HashMap<String, String>();
@@ -73,14 +83,20 @@ public class Compiler extends HttpServlet {
 	          if (!userFile.exists()){
 	              userFile.createNewFile();
 	          } 
-	    	  String userProgram = request.getParameter("code");
+	    	  userProgram = request.getParameter("code");
 	    	  FileWriter fileWriter = new FileWriter(userFile);
 	    	  fileWriter.write(userProgram);
 	    	  fileWriter.flush();
 	    	  fileWriter.close();
 	    	  
 	    	  File mainFile = new File(mainCodeFilename);
-	          String mainProgram = ProgramStrings.getMainProgram();
+	    	  
+	    	  try{
+	    		  mainProgram = readFile(mainProgramUrl);  
+	    	  } catch (IOException e) {
+				System.out.println(e);
+				mainProgram = ProgramStrings.getMainProgram();		
+			}
 	          FileWriter writer = new FileWriter(mainFile);
 	          writer.write(mainProgram);
 	          writer.flush();
@@ -119,6 +135,23 @@ public class Compiler extends HttpServlet {
 	        
 	     
 	      
+	}
+	
+	private String readFile(String fileName) throws IOException {
+	    BufferedReader br = new BufferedReader(new FileReader(fileName));
+	    try {
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+
+	        while (line != null) {
+	            sb.append(line);
+	            sb.append("\n");
+	            line = br.readLine();
+	        }
+	        return sb.toString();
+	    } finally {
+	        br.close();
+	    }
 	}
 
 }

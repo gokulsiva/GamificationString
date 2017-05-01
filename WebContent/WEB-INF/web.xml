@@ -11,4 +11,18 @@
          d:\tomcat\uploads\
      </param-value>
   </context-param>
+  <context-param>
+    <description>Location to get main file</description>
+    <param-name>mainFile</param-name>
+    <param-value>
+         d:\tomcat\source\MainClass.java
+     </param-value>
+  </context-param>
+  <context-param>
+    <description>Location to get template file to load editor</description>
+    <param-name>templateFile</param-name>
+    <param-value>
+         d:\tomcat\source\GamificationString.java
+     </param-value>
+  </context-param>
 </web-app>

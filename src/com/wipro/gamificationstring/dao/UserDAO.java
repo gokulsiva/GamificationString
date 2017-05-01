@@ -12,6 +12,13 @@ import org.hibernate.Session;
 import com.wipro.gamificationstring.bean.UserBean;
 import com.wipro.gamificationstring.util.DBUtil;
 
+
+/**
+ * @author Surya
+ *
+ */
+
+
 public class UserDAO {
 
 	public static String create(UserBean user) {

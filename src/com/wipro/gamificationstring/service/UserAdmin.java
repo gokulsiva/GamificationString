@@ -5,6 +5,13 @@ import java.util.List;
 import com.wipro.gamificationstring.bean.UserBean;
 import com.wipro.gamificationstring.dao.UserDAO;
 
+
+/**
+ * @author Sharmila
+ *
+ */
+
+
 public class UserAdmin {
 	
 	public static String createUser(UserBean user) {

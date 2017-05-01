@@ -5,6 +5,14 @@ import java.util.List;
 import com.wipro.gamificationstring.bean.QuestionBean;
 import com.wipro.gamificationstring.dao.QuestionDAO;
 
+
+/**
+ * @author Revathi
+ *
+ */
+
+
+
 public class QuestionAdmin {
 	
 	public static String createQuestion(QuestionBean question) {

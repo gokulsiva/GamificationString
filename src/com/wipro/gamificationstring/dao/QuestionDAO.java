@@ -11,6 +11,15 @@ import org.hibernate.Session;
 import com.wipro.gamificationstring.bean.QuestionBean;
 import com.wipro.gamificationstring.util.DBUtil;
 
+
+
+/**
+ * @author Sowmiya
+ *
+ */
+
+
+
 public class QuestionDAO {
 	
 	public static String create(QuestionBean question) {

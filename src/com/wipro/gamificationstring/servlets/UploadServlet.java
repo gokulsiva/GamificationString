@@ -1,8 +1,11 @@
 package com.wipro.gamificationstring.servlets;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -23,23 +26,31 @@ import com.wipro.gamificationstring.service.QuestionAdmin;
 import com.wipro.gamificationstring.util.ProcessExecutor;
 import com.wipro.gamificationstring.util.ProgramStrings;
 
+
+/**
+ * @author Gokul
+ *
+ */
+
+
 @WebServlet("/UploadServlet")
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
    
-   /**
-	 * 
-	 */
+   
 	private static final long serialVersionUID = 1L;
 	private boolean isMultipart;
     private String filePath;
+    private String mainProgramUrl;
     private int maxFileSize = 50 * 1024;
     private int maxMemSize = 4 * 1024;
 
-   public void init( ){
-      // Get the file location where it would be stored.
-      filePath = getServletContext().getInitParameter("file-upload"); 
-   }
+    public void init( ){
+        // Get the file location where it would be stored.
+        filePath = getServletContext().getInitParameter("file-upload"); 
+        mainProgramUrl = getServletContext().getInitParameter("mainFile");
+     }
+    
    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, java.io.IOException {
 	   
 	   if(request.getSession().getAttribute("GamificationStringUserEmail") == null){
@@ -73,6 +84,7 @@ public class UploadServlet extends HttpServlet {
       String userCodeFilename = dir+"GamificationString.java";
       String mainCodeFilename = dir+"MainClass.java";
       String testCase = question.getTestCase_1();
+      String mainProgram = "";
       String result = "";
       
       
@@ -98,7 +110,12 @@ public class UploadServlet extends HttpServlet {
       
       try {
     	  File mainFile = new File(mainCodeFilename);
-          String mainProgram = ProgramStrings.getMainProgram();
+    	  try{
+    		  mainProgram = readFile(mainProgramUrl);  
+    	  } catch (IOException e) {
+			System.out.println(e);
+			mainProgram = ProgramStrings.getMainProgram();		
+		}
           FileWriter writer = new FileWriter(mainFile);
           writer.write(mainProgram);
           writer.flush();
@@ -136,5 +153,22 @@ public class UploadServlet extends HttpServlet {
       out.close();
       
    }
+   
+   private String readFile(String fileName) throws IOException {
+	    BufferedReader br = new BufferedReader(new FileReader(fileName));
+	    try {
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+
+	        while (line != null) {
+	            sb.append(line);
+	            sb.append("\n");
+	            line = br.readLine();
+	        }
+	        return sb.toString();
+	    } finally {
+	        br.close();
+	    }
+	}
 
 }

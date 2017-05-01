@@ -7,6 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+
+/**
+ * @author Gokul
+ *
+ */
+
 @Entity
 @Table(name = "Questions")
 public class QuestionBean {

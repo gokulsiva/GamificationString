@@ -12,6 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.wipro.gamificationstring.bean.QuestionBean;
 import com.wipro.gamificationstring.service.QuestionAdmin;
 
+
+/**
+ * @author Sowmiya
+ *
+ */
+
+
 /**
  * Servlet implementation class UpdateQuestion
  */

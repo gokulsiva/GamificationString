@@ -1,3 +1,5 @@
+<!-- author : Surya -->
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -95,6 +97,7 @@ function ajaxFunction (e) {
             	location.reload(true);
             	console.log(response);
             	$("#hidden_div").text(response);
+            	location.reload(true);
             }
         });
     }

@@ -13,6 +13,13 @@ import javax.servlet.http.HttpSession;
 import com.wipro.gamificationstring.bean.UserBean;
 import com.wipro.gamificationstring.service.UserAdmin;
 
+
+/**
+ * @author Revathi
+ *
+ */
+
+
 /**
  * Servlet implementation class LogIn
  */

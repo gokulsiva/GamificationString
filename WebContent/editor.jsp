@@ -1,15 +1,48 @@
+<!-- author : Gokul -->
+
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
 
-<%@ page import="com.wipro.gamificationstring.util.ProgramStrings, com.wipro.gamificationstring.service.QuestionAdmin, com.wipro.gamificationstring.bean.QuestionBean" %>
+<%@ page import="java.io.BufferedReader, java.io.FileReader, java.io.IOException,com.wipro.gamificationstring.util.ProgramStrings, com.wipro.gamificationstring.service.QuestionAdmin, com.wipro.gamificationstring.bean.QuestionBean" %>
+
+<%!
+String readFile(String fileName) throws IOException {
+    BufferedReader br = new BufferedReader(new FileReader(fileName));
+    try {
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+
+        while (line != null) {
+            sb.append(line);
+            sb.append("\n");
+            line = br.readLine();
+        }
+        return sb.toString();
+    } finally {
+        br.close();
+    }
+}
+
+%>
 
 <%
     	if(session.getAttribute("GamificationStringUserEmail") == null){
 			response.sendRedirect("index.jsp?message=Please LogIn.");
 			return;
 		}
+		String mainFile = (String) pageContext.getServletContext().getInitParameter("templateFile");
+		String template = "";
+		try{
+			template = readFile(mainFile);
+		} catch (IOException e){
+			System.out.println(e);
+			template = ProgramStrings.getTemplate();
+		}
     %>
+    
+    
 
 <%
 	QuestionBean question = null;
@@ -75,9 +108,6 @@
                 console.log(response);  
             	//$("textarea[name='output']").html(response);  
             	typeContent(response);
-            	var output = document.getElementById('output');
-            	//animateText(output);
-            	$('#hidden_div').hide();
             	
             }
         });
@@ -92,15 +122,10 @@
             url: "TestCaseChecker?id="+id,
             type: 'GET',
             success: function(response) {
-            	$('#hidden_div').hide();
                 console.log(response);
-                var str = response.split(" ");
-                $("textarea[name='output']").text(response);
-                var result = str[str.length - 1];
-                console.log(result);
-                if(result.trim() == 'passed.') {
-                    alert('Congrats you solved this problem successfully.');
-                }
+                //$("textarea[name='output']").text(response);
+                typeContent(response);
+                
             }
         });
     	
@@ -123,6 +148,18 @@
         	fadeOutClass: 'typed-fade-out',
         	fadeOutSpeed: 500, // milliseconds
           });
+    	
+    	$('#hidden_div').hide();
+    	var str = string.split(" ");
+        var result = str[str.length - 1];
+        console.log(result);
+        if(result.trim() == 'passed.') {
+        	jQuery(document).ready(function() {
+        		   setInterval(function() {
+        		       jQuery('#loadData').load('user-details.jsp');
+        		   }, 1000);
+        		});
+        }
     }
     
 </script>
@@ -252,7 +289,7 @@ input[type="file"] {
 </style>
 </head>
 <body>
-<div style="background: lightgrey;">
+<div id="loadData">
 <jsp:include page="user-details.jsp" />
 </div>
 
@@ -286,7 +323,7 @@ input[type="file"] {
 		    </font>
 		    <div class="container">
 		    <code>
-		    <textarea name="code" spellcheck="false" form="code_form" style=" font-family:cursive; border:solid 2px orange; font-family: monospace; white-space: nowrap;" class="fill"><%= ProgramStrings.getTemplate() %></textarea>
+		    <textarea name="code" spellcheck="false" form="code_form" style=" font-family:cursive; border:solid 2px orange; font-family: monospace; white-space: nowrap;" class="fill"><%= template %></textarea>
 		    </code>
 			</div>
 	    </div>
@@ -294,7 +331,7 @@ input[type="file"] {
 	    <font class="font-class">
 	    	<h3>Program output:</h3><br><br>
 	    	</font>
-	    	<textarea class="element" name="output" id="output" spellcheck="false" readonly style="font-family:cursive; border:solid 2px orange; width: 97%; white-space: nowrap;" rows="8"></textarea>
+	    	<textarea class="element" name="output" id="output" spellcheck="false" readonly style="font-family:cursive; border:solid 2px orange; width: 97%;" rows="8"></textarea>
 	    </div>
 	</div>
 	<br>

@@ -3,6 +3,13 @@ package com.wipro.gamificationstring.util;
 import com.wipro.gamificationstring.bean.UserBean;
 import com.wipro.gamificationstring.dao.UserDAO;
 
+
+/**
+ * @author Revathi
+ *
+ */
+
+
 public class AdminUserCreator {
 
 	public static void main(String[] args) {
